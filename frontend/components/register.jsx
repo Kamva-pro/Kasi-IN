@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   input: {
-    width: '100%',
+    width: '40%',
     padding: 15,
     marginBottom: 10,
     borderWidth: 1,
@@ -92,17 +92,26 @@ const styles = StyleSheet.create({
     fontSize: 16,
     backgroundColor: '#fff',
   },
-  linkText: {
-    marginTop: 20,
-    color: '#007BFF',
-    textDecorationLine: 'underline',
-  },
+ 
 
   button: {
-    backgroundColor: '#f4f4f9',
-    padding: 20,
-    color: "#fff",
-  }
+    marginTop: 20,
+    backgroundColor: '#4CAF50',
+    padding: 15,
+    width: '40%',
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  linkText: {
+    marginTop: 20,
+    color: '#838383',
+  },
 });
 
 export default RegisterScreen;

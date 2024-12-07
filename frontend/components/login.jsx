@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f4f4f9',
   },
   input: {
-    width: '100%',
+    width: '40%',
     padding: 15,
     marginBottom: 10,
     borderWidth: 1,
@@ -86,9 +86,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   button: {
+    marginTop: 20,
     backgroundColor: '#4CAF50',
     padding: 15,
-    width: '100%',
+    width: '40%',
     borderRadius: 5,
     alignItems: 'center',
   },
@@ -99,8 +100,7 @@ const styles = StyleSheet.create({
   },
   linkText: {
     marginTop: 20,
-    color: '#007BFF',
-    textDecorationLine: 'underline',
+    color: '#838383',
   },
 });
 
