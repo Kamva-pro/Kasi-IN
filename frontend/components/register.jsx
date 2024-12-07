@@ -1,15 +1,26 @@
+// components/RegisterScreen.js
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from 'react-native';
+import { View, TextInput, Button, Text, TouchableOpacity, Alert, StyleSheet } from 'react-native';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import  auth from '../firebaseConfig'; // Import the Firebase auth instance
 
-
-// Register Screen Component
 const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleRegister = () => {
-    console.log('Registering with:', email, password, confirmPassword);
+  const handleRegister = async () => {
+    if (password !== confirmPassword) {
+      Alert.alert('Error', 'Passwords do not match!');
+      return;
+    }
+
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      Alert.alert('Registration Successful', 'Account created!');
+    } catch (error) {
+      Alert.alert('Error', error.message);
+    }
   };
 
   return (
@@ -48,9 +59,6 @@ const RegisterScreen = ({ navigation }) => {
   );
 };
 
-
-
-// Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -82,4 +90,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegisterScreen
+export default RegisterScreen;
