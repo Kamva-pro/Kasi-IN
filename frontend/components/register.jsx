@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, TouchableOpacity, Alert, Button, StyleSheet, ScrollView } from 'react-native';
-import { auth, db, storage } from '../firebase-config';
+import { View, TextInput, Text, TouchableOpacity, Alert, StyleSheet, ScrollView } from 'react-native';
+import { auth, db } from '../firebase-config'; // Import necessary Firebase modules
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection } from 'firebase/firestore'; // Import Firestore methods
 import { launchImageLibrary } from 'react-native-image-picker';
 import * as Location from 'expo-location';
 
@@ -16,7 +16,6 @@ const RegisterScreen = ({ navigation }) => {
   const [businessType, setBusinessType] = useState('');
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
-  const [image, setImage] = useState('');
   const [menuItems, setMenuItems] = useState([]);
   const [images, setImages] = useState([]);
 
@@ -46,13 +45,21 @@ const RegisterScreen = ({ navigation }) => {
 
   // Function to handle business registration
   const handleBusinessRegistration = async () => {
+    if (password !== confirmPassword) {
+      Alert.alert('Error', 'Passwords do not match!');
+      return;
+    }
     try {
-      const businessRef = await addDoc(collection(db, 'businesses'), {
-        business_id: auth.currentUser.uid,  // Using the user's UID as the business_id
+      // Create user for business authentication
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const businessId = userCredential.user.uid; // Get the UID of the authenticated business user
+
+      // Save business details to Firestore directly in the 'businesses' collection
+      await addDoc(collection(db, 'businesses'), {
+        business_id: businessId, // Use the UID as the business ID
         business_name: businessName,
         business_type: businessType,
         description,
-        image: image, // Save image URL (you'll need to handle image upload separately)
         location,
       });
 
@@ -76,13 +83,13 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   // Function to allow image selection
-  const selectImage = () => {
-    launchImageLibrary({ mediaType: 'photo' }, (response) => {
-      if (response.assets) {
-        setImage(response.assets[0].uri);  // Save the image URI
-      }
-    });
-  };
+  // const selectImage = () => {
+  //   launchImageLibrary({ mediaType: 'photo', selectionLimit: 5 }, (response) => {
+  //     if (response.assets) {
+  //       setImages(response.assets.map(asset => asset.uri));  // Save the image URIs
+  //     }
+  //   });
+  // };
 
   return (
     <ScrollView style={styles.container}>
@@ -139,6 +146,28 @@ const RegisterScreen = ({ navigation }) => {
             value={businessName}
             onChangeText={setBusinessName}
           />
+
+<TextInput
+            style={styles.input}
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Confirm Password"
+            secureTextEntry
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+          />
+
           <TextInput
             style={styles.input}
             placeholder="Business Type"
@@ -157,10 +186,16 @@ const RegisterScreen = ({ navigation }) => {
             onChangeText={setDescription}
           />
 
+          {/* <TextInput
+            style={styles.input}
+            placeholder="Menu Items (comma separated)"
+            value={menuItems.join(', ')}
+            onChangeText={(text) => setMenuItems(text.split(',').map(item => item.trim()))}
+          />
+
           <TouchableOpacity style={styles.button} onPress={selectImage}>
-            <Text style={styles.buttonText}>Select Image</Text>
-          </TouchableOpacity>
-          {image && <Text>Image selected: {image}</Text>}
+            <Text style={styles.buttonText}>Select Images</Text>
+          </TouchableOpacity> */}
 
           <TouchableOpacity style={styles.button} onPress={handleBusinessRegistration}>
             <Text style={styles.buttonText}>Register Business</Text>
