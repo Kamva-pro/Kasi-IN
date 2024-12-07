@@ -97,6 +97,12 @@ const styles = StyleSheet.create({
     color: '#007BFF',
     textDecorationLine: 'underline',
   },
+
+  button: {
+    backgroundColor: '#f4f4f9',
+    padding: 20,
+    color: "#fff",
+  }
 });
 
 export default RegisterScreen;
