@@ -19,7 +19,6 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Login</Text>
       
       <TextInput
         style={styles.input}

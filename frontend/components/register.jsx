@@ -1,8 +1,8 @@
 // components/RegisterScreen.js
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, TouchableOpacity, Alert, StyleSheet } from 'react-native';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import  auth from '../firebaseConfig'; // Import the Firebase auth instance
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase-config';
 
 const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -10,22 +10,27 @@ const RegisterScreen = ({ navigation }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleRegister = async () => {
+    console.log('Handle Register Triggered');
     if (password !== confirmPassword) {
+      console.log('Passwords do not match');
       Alert.alert('Error', 'Passwords do not match!');
       return;
     }
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      console.log('Attempting registration...');
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      console.log('Registration successful:', userCredential);
       Alert.alert('Registration Successful', 'Account created!');
+      navigation.navigate('Login'); 
     } catch (error) {
+      console.log('Registration failed:', error.message);
       Alert.alert('Error', error.message);
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Register</Text>
       
       <TextInput
         style={styles.input}
@@ -50,7 +55,11 @@ const RegisterScreen = ({ navigation }) => {
         secureTextEntry
       />
       
-      <Button title="Register" onPress={handleRegister} color="#4CAF50" />
+      {/* <Button title="Register" onPress={handleRegister} color="#4CAF50" /> */}
+      
+      <TouchableOpacity onPress={handleRegister} style={styles.button}>
+        <Text style={styles.buttonText}>Register</Text>
+      </TouchableOpacity>
       
       <TouchableOpacity onPress={() => navigation.navigate('Login')}>
         <Text style={styles.linkText}>Already have an account? Login</Text>
