@@ -213,13 +213,33 @@ const styles = StyleSheet.create({
     backgroundColor: '#f4f4f9',
   },
   input: {
-    width: '100%',
+    width: '40%',
     padding: 15,
     marginBottom: 10,
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 5,
     backgroundColor: '#fff',
+  },
+ 
+
+  button: {
+    marginTop: 20,
+    backgroundColor: '#4CAF50',
+    padding: 15,
+    width: '40%',
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  linkText: {
+    marginTop: 20,
+    color: '#838383',
   },
   button: {
     padding: 15,
