@@ -1,6 +1,6 @@
 // components/LoginScreen.js
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, TouchableOpacity, Text, Alert, StyleSheet } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, Alert, StyleSheet, ImageBackground } from 'react-native';
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 import { auth } from '../firebase-config'; 
@@ -39,31 +39,39 @@ const LoginScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-      />
+    <ImageBackground 
+      source={{ uri: 'https://your-background-image-url.com' }} 
+      style={styles.container} 
+      resizeMode="cover"
+    >
+      <View style={styles.overlay}>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          placeholderTextColor="#fff"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+        />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          placeholderTextColor="#fff"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
 
-      <TouchableOpacity onPress={handleLogin} style={styles.button} disabled={loading}>
-        <Text style={styles.buttonText}>{loading ? 'Logging in...' : 'Login'}</Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={handleLogin} style={styles.button} disabled={loading}>
+          <Text style={styles.buttonText}>{loading ? 'Logging in...' : 'Login'}</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-        <Text style={styles.linkText}>Don't have an account? Register</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+          <Text style={styles.linkText}>Don't have an account? Register</Text>
+        </TouchableOpacity>
+      </View>
+    </ImageBackground>
   );
 };
 
@@ -73,34 +81,44 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#f4f4f9',
+  },
+  overlay: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent overlay
+    padding: 30,
+    borderRadius: 10,
   },
   input: {
-    width: '40%',
+    width: '80%',
     padding: 15,
-    marginBottom: 10,
+    marginBottom: 20,
     borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 5,
+    borderColor: '#fff',
+    borderRadius: 25,
     fontSize: 16,
-    backgroundColor: '#fff',
+    color: '#fff',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)', // Transparent background
   },
   button: {
     marginTop: 20,
-    backgroundColor: '#4CAF50',
-    padding: 15,
-    width: '40%',
-    borderRadius: 5,
+    backgroundColor: '#000', // Black button for minimalistic look
+    paddingVertical: 15,
+    width: '80%',
+    borderRadius: 25,
     alignItems: 'center',
   },
   buttonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
   },
   linkText: {
-    marginTop: 20,
-    color: '#838383',
+    marginTop: 15,
+    color: '#fff',
+    textDecorationLine: 'underline',
   },
 });
 
