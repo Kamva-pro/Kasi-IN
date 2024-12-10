@@ -40,6 +40,7 @@ const businesses = [
       type: 'Food & Beverage',
       description: 'A cozy spot serving authentic South African dishes.',
       location: '-26.2301, 27.8978',
+      cover_img: '.'
     },
     {
       id: '7',
@@ -140,7 +141,6 @@ const businesses = [
       description: 'Catch the latest blockbusters at our local cinemas.',
       location: '-26.2405, 27.8800', // Further location
     },
-    // More businesses with adjusted locations
     {
       id: '100',
       name: 'Orlando West Auto Repair',

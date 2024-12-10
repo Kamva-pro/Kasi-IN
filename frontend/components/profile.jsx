@@ -8,6 +8,16 @@ const BusinessProfile = ({ route }) => {
   const { businessId, source } = route.params; // Add source parameter
   const [business, setBusiness] = useState(null);
 
+  // Preload the abstract art images
+  const coverImages = [
+    require('../../assets/img-1.jpg'),
+    require('../../assets/img-2.jpg'),
+    require('../../assets/img-3.jpg'),
+  ];
+
+  // Select a random image
+  const randomImage = coverImages[Math.floor(Math.random() * coverImages.length)];
+
   useEffect(() => {
     const fetchBusiness = async () => {
       if (source === 'firestore') {
@@ -33,11 +43,18 @@ const BusinessProfile = ({ route }) => {
 
   if (!business) return <Text style={styles.loadingText}>Loading...</Text>;
 
+  // Format location for display
+  const formatLocation = (location) => {
+    if (!location) return 'Location not available';
+    const [latitude, longitude] = location.split(',').map(coord => parseFloat(coord));
+    return `Latitude: ${latitude.toFixed(5)}, Longitude: ${longitude.toFixed(5)}`;
+  };
+
   return (
     <ScrollView style={styles.container}>
       {/* Cover Image */}
       <Image
-        source={{ uri: business.coverImage || 'https://via.placeholder.com/400x200' }} // Default image if none provided
+        source={randomImage}
         style={styles.coverImage}
       />
       {/* Business Info */}
@@ -46,6 +63,14 @@ const BusinessProfile = ({ route }) => {
         <Text style={styles.description}>
           {business.description || 'No description available'}
         </Text>
+
+        {/* Location */}
+        <View style={styles.locationContainer}>
+          <Text style={styles.sectionTitle}>Location</Text>
+          <Text style={styles.locationText}>
+            {business.address || formatLocation(business.location)}
+          </Text>
+        </View>
       </View>
     </ScrollView>
   );
@@ -73,6 +98,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#666',
     lineHeight: 24,
+  },
+  locationContainer: {
+    marginTop: 20,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 10,
+  },
+  locationText: {
+    fontSize: 16,
+    color: '#555',
   },
   loadingText: {
     flex: 1,
