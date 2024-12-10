@@ -1,87 +1,45 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, TextInput, StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { collection, getDocs } from 'firebase/firestore'; 
-import { db } from '../firebase-config'; 
+import MapView, { Marker } from 'react-native-maps';
+import businesses from '../businesses'; // Import businesses data
 import { useNavigation } from '@react-navigation/native';
-import MapView, { Marker } from 'react-native-maps'; // Import MapView
-import * as Location from 'expo-location'; // Import Location API
 
 const HomePage = () => {
-  const [businesses, setBusinesses] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [region, setRegion] = useState(null); // To store the user's location
-  const [loadingLocation, setLoadingLocation] = useState(true); // New state to track location loading
   const navigation = useNavigation();
 
-  // Fetch businesses from Firestore
-  useEffect(() => {
-    const fetchBusinesses = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, 'businesses'));
-        const data = querySnapshot.docs
-          .map((doc) => {
-            const locationString = doc.data().location;
-            if (!locationString) {
-              console.warn(`Missing location for business ID: ${doc.id}`);
-              return null;
-            }
+  // Hardcoded coordinates for Orlando West, Soweto (lat, long)
+  const sowetoRegion = {
+    latitude: -26.2283,
+    longitude: 27.8981,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  };
 
-            const [latitude, longitude] = locationString
-              .split(',')
-              .map((coord) => parseFloat(coord));
-
-            return {
-              id: doc.id,
-              name: doc.data().business_name || 'Unknown Business',
-              type: doc.data().business_type || 'Unknown Type',
-              description: doc.data().description || 'No description provided',
-              latitude,
-              longitude,
-            };
-          })
-          .filter((business) => business !== null);
-
-        setBusinesses(data);
-      } catch (error) {
-        console.error('Error fetching businesses:', error);
-      }
-    };
-
-    fetchBusinesses();
-  }, []);
-
-  // Fetch current location for the map
-  useEffect(() => {
-    const getCurrentLocation = async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        console.log('Permission to access location was denied');
-        setLoadingLocation(false); // Set loadingLocation to false if permission is denied
-        return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      setRegion({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      });
-      setLoadingLocation(false); // Stop loading after location is fetched
-    };
-
-    getCurrentLocation();
-  }, []);
-
-  // Filter businesses based on the search query
-  const filteredBusinesses = businesses.filter((business) =>
+  // Filter businesses based on search query
+  const filteredBusinesses = businesses.filter(business =>
     business.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Navigate to business profile
+  // Adjust business locations to add distance between markers
+  const adjustedBusinesses = filteredBusinesses.map(business => {
+    const [lat, lon] = business.location.split(',').map(coord => parseFloat(coord));
+
+    // Add small offsets to the business coordinates to space them out
+    const adjustedLat = lat + (Math.random() * 0.005 - 0.0025);  // Random offset between -0.0025 and +0.0025
+    const adjustedLon = lon + (Math.random() * 0.005 - 0.0025);  // Random offset between -0.0025 and +0.0025
+
+    return {
+      ...business,
+      location: `${adjustedLat},${adjustedLon}`,
+    };
+  });
+
   const handleCardPress = (business) => {
-    navigation.navigate('Profile', { businessId: business.id });
+    const source = business.firestore ? 'firestore' : 'local'; // Determine source
+    navigation.navigate('Profile', { businessId: business.id, source });
   };
+  
 
   return (
     <View style={styles.container}>
@@ -89,49 +47,44 @@ const HomePage = () => {
         style={styles.searchBar}
         placeholder="Search businesses"
         value={searchQuery}
-        onChangeText={(text) => setSearchQuery(text)}
+        onChangeText={setSearchQuery}
       />
 
-      {/* Show Map if there's no search query, else show ScrollView */}
-      {searchQuery.length === 0 ? (
-        loadingLocation ? (
-          <Text style={styles.loadingText}>Loading map...</Text>
-        ) : (
-          region && (
-            <MapView
-              style={styles.map}
-              region={region}
-              showsUserLocation={true}
-              onRegionChangeComplete={setRegion}
-            >
-              {businesses.map((business) => (
-                <Marker
-                  key={business.id}
-                  coordinate={{ latitude: business.latitude, longitude: business.longitude }}
-                  title={business.name}
-                  description={business.description}
-                />
-              ))}
-            </MapView>
-          )
-        )
-      ) : (
-        <ScrollView style={styles.scrollView}>
-          {filteredBusinesses.length > 0 ? (
-            filteredBusinesses.map((business) => (
-              <TouchableOpacity
-                key={business.id}
-                style={styles.card}
-                onPress={() => handleCardPress(business)}
-              >
+      {/* Conditional rendering: If there’s a search query, show the search results, otherwise show the map */}
+      {searchQuery.length > 0 ? (
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          {filteredBusinesses.map(business => (
+            <TouchableOpacity key={business.id} onPress={() => handleCardPress(business)}>
+              <View style={styles.card}>
                 <Text style={styles.cardTitle}>{business.name}</Text>
-                <Text style={styles.cardSubtitle}>{business.type}</Text>
-              </TouchableOpacity>
-            ))
-          ) : (
-            <Text style={styles.noResultsText}>No results found</Text>
-          )}
+                <Text style={styles.cardType}>{business.type}</Text>
+                <Text style={styles.cardDescription}>{business.description}</Text>
+              </View>
+            </TouchableOpacity>
+          ))}
         </ScrollView>
+      ) : (
+        // MapView with hardcoded region for Soweto
+        <MapView
+          style={styles.map}
+          initialRegion={sowetoRegion}
+          showsUserLocation={true}
+        >
+          {adjustedBusinesses.map(business => {
+            const [latitude, longitude] = business.location.split(',').map(coord => parseFloat(coord));
+            return (
+              <Marker
+                key={business.id}
+                coordinate={{
+                  latitude,
+                  longitude,
+                }}
+                title={business.name}
+                description={business.type}
+              />
+            );
+          })}
+        </MapView>
       )}
     </View>
   );
@@ -140,7 +93,6 @@ const HomePage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   searchBar: {
     height: 40,
@@ -150,40 +102,31 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     borderRadius: 5,
   },
-  map: {
-    flex: 1,
-  },
-  loadingText: {
-    fontSize: 18,
-    textAlign: 'center',
-    marginTop: 20,
-  },
-  scrollView: {
-    flex: 1,
+  scrollContainer: {
+    paddingBottom: 20,
   },
   card: {
-    marginBottom: 10,
+    backgroundColor: '#fff',
     padding: 15,
-    backgroundColor: '#f9f9f9',
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    marginHorizontal: 10,
+    marginBottom: 10,
+    borderRadius: 5,
+    elevation: 3,
   },
   cardTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
   },
-  cardSubtitle: {
+  cardType: {
     fontSize: 14,
-    color: '#777',
+    color: '#555',
   },
-  noResultsText: {
-    textAlign: 'center',
-    marginTop: 20,
-    fontSize: 16,
-    color: '#999',
+  cardDescription: {
+    fontSize: 12,
+    color: '#888',
+  },
+  map: {
+    width: '100%',
+    height: '100%',
   },
 });
 
