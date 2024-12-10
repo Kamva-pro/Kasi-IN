@@ -1,86 +1,216 @@
-// components/RegisterScreen.js
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, TouchableOpacity, Alert, StyleSheet } from 'react-native';
+import { View, TextInput, Text, TouchableOpacity, Alert, StyleSheet, ScrollView } from 'react-native';
+import { auth, db } from '../firebase-config'; // Import necessary Firebase modules
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase-config';
+import { addDoc, collection } from 'firebase/firestore'; // Import Firestore methods
+import { launchImageLibrary } from 'react-native-image-picker';
+import * as Location from 'expo-location';
 
 const RegisterScreen = ({ navigation }) => {
+  const [selectedRole, setSelectedRole] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState('');
+  const [businessName, setBusinessName] = useState('');
+  const [businessType, setBusinessType] = useState('');
+  const [description, setDescription] = useState('');
+  const [location, setLocation] = useState('');
+  const [menuItems, setMenuItems] = useState([]);
+  const [images, setImages] = useState([]);
 
-  const handleRegister = async () => {
-    console.log('Handle Register Triggered');
+  // Function to handle user registration
+  const handleUserRegistration = async () => {
     if (password !== confirmPassword) {
-      console.log('Passwords do not match');
       Alert.alert('Error', 'Passwords do not match!');
       return;
     }
-
     try {
-      console.log('Attempting registration...');
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      console.log('Registration successful:', userCredential);
-      Alert.alert('Registration Successful', 'Account created!');
-      navigation.navigate('Login'); 
+      const userId = userCredential.user.uid;
+
+      // Save user to Firestore
+      await addDoc(collection(db, 'users'), {
+        userId,
+        name,
+        email,
+      });
+
+      Alert.alert('Registration Successful', 'Welcome!');
+      navigation.navigate('Home'); // Redirect to home after registration
     } catch (error) {
-      console.log('Registration failed:', error.message);
       Alert.alert('Error', error.message);
     }
   };
 
+  // Function to handle business registration
+  const handleBusinessRegistration = async () => {
+    if (password !== confirmPassword) {
+      Alert.alert('Error', 'Passwords do not match!');
+      return;
+    }
+    try {
+      // Create user for business authentication
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const businessId = userCredential.user.uid; // Get the UID of the authenticated business user
+
+      // Save business details to Firestore directly in the 'businesses' collection
+      await addDoc(collection(db, 'businesses'), {
+        business_id: businessId, // Use the UID as the business ID
+        business_name: businessName,
+        business_type: businessType,
+        description,
+        location,
+      });
+
+      Alert.alert('Business Registered', 'Your business has been added!');
+      navigation.navigate('Home'); // Redirect to home after registration
+    } catch (error) {
+      Alert.alert('Error', error.message);
+    }
+  };
+
+  // Function to handle location picking
+  const pickLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Permission Denied', 'Permission to access location was denied');
+      return;
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    setLocation(`${location.coords.latitude}, ${location.coords.longitude}`);  // Set location as a string (latitude, longitude)
+  };
+
+  // Function to allow image selection
+  // const selectImage = () => {
+  //   launchImageLibrary({ mediaType: 'photo', selectionLimit: 5 }, (response) => {
+  //     if (response.assets) {
+  //       setImages(response.assets.map(asset => asset.uri));  // Save the image URIs
+  //     }
+  //   });
+  // };
+
   return (
-    <View style={styles.container}>
-      
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-      />
-      
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-      
-      <TextInput
-        style={styles.input}
-        placeholder="Confirm Password"
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-        secureTextEntry
-      />
-      
-      {/* <Button title="Register" onPress={handleRegister} color="#4CAF50" /> */}
-      
-      <TouchableOpacity onPress={handleRegister} style={styles.button}>
-        <Text style={styles.buttonText}>Register</Text>
-      </TouchableOpacity>
-      
-      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-        <Text style={styles.linkText}>Already have an account? Login</Text>
-      </TouchableOpacity>
-    </View>
+    <ScrollView style={styles.container}>
+      {!selectedRole && (
+        <View>
+          <TouchableOpacity style={styles.button} onPress={() => setSelectedRole('user')}>
+            <Text style={styles.buttonText}>Register as User</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => setSelectedRole('business')}>
+            <Text style={styles.buttonText}>Register as Business</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {selectedRole === 'user' && (
+        <View>
+          <TextInput
+            style={styles.input}
+            placeholder="Name"
+            value={name}
+            onChangeText={setName}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Confirm Password"
+            secureTextEntry
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+          />
+          <TouchableOpacity style={styles.button} onPress={handleUserRegistration}>
+            <Text style={styles.buttonText}>Register</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {selectedRole === 'business' && (
+        <View>
+          <TextInput
+            style={styles.input}
+            placeholder="Business Name"
+            value={businessName}
+            onChangeText={setBusinessName}
+          />
+
+<TextInput
+            style={styles.input}
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Confirm Password"
+            secureTextEntry
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+          />
+
+          <TextInput
+            style={styles.input}
+            placeholder="Business Type"
+            value={businessType}
+            onChangeText={setBusinessType}
+          />
+          <TouchableOpacity style={styles.button} onPress={pickLocation}>
+            <Text style={styles.buttonText}>Pick Location</Text>
+          </TouchableOpacity>
+          <Text>{location ? `Location: ${location}` : 'No location selected'}</Text>
+
+          <TextInput
+            style={styles.input}
+            placeholder="Description"
+            value={description}
+            onChangeText={setDescription}
+          />
+
+          {/* <TextInput
+            style={styles.input}
+            placeholder="Menu Items (comma separated)"
+            value={menuItems.join(', ')}
+            onChangeText={(text) => setMenuItems(text.split(',').map(item => item.trim()))}
+          />
+
+          <TouchableOpacity style={styles.button} onPress={selectImage}>
+            <Text style={styles.buttonText}>Select Images</Text>
+          </TouchableOpacity> */}
+
+          <TouchableOpacity style={styles.button} onPress={handleBusinessRegistration}>
+            <Text style={styles.buttonText}>Register Business</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     padding: 20,
     backgroundColor: '#f4f4f9',
-  },
-  header: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 20,
   },
   input: {
     width: '40%',
@@ -89,7 +219,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 5,
-    fontSize: 16,
     backgroundColor: '#fff',
   },
  
@@ -111,6 +240,17 @@ const styles = StyleSheet.create({
   linkText: {
     marginTop: 20,
     color: '#838383',
+  },
+  button: {
+    padding: 15,
+    backgroundColor: '#4CAF50',
+    marginBottom: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
   },
 });
 
