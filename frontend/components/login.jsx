@@ -47,6 +47,8 @@ const LoginScreen = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       Alert.alert('Login Successful', 'Welcome!');
+      navigation.replace('Home');
+
     } catch (error) {
       Alert.alert('Error', error.message);
     } finally {
