@@ -4,28 +4,28 @@ import { View, TextInput, TouchableOpacity, Text, Alert, StyleSheet } from 'reac
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 import { auth } from '../firebase-config';
-import * as Font from 'expo-font';
+// import * as Font from 'expo-font';
 import { AppLoading } from 'expo'; // To handle loading font asynchronously
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [fontLoaded, setFontLoaded] = useState(false);
+  // const [fontLoaded, setFontLoaded] = useState(false);
   const navigation = useNavigation();
 
-  // Load custom fonts asynchronously
-  useEffect(() => {
-    const loadFonts = async () => {
-      await Font.loadAsync({
-        'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
-        'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
-      });
-      setFontLoaded(true);
-    };
+  // // Load custom fonts asynchronously
+  // useEffect(() => {
+  //   const loadFonts = async () => {
+  //     await Font.loadAsync({
+  //       'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
+  //       'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
+  //     });
+  //     setFontLoaded(true);
+  //   };
 
-    loadFonts();
-  }, []);
+  //   loadFonts();
+  // }, []);
 
   // Check if the user is already authenticated
   useEffect(() => {
@@ -55,9 +55,9 @@ const LoginScreen = () => {
   };
 
   // Wait for fonts to be loaded
-  if (!fontLoaded) {
-    return <AppLoading />;
-  }
+  // if (!fontLoaded) {
+  //   return <AppLoading />;
+  // }
 
   return (
     <View style={styles.container}>
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   header: {
-    fontFamily: 'Roboto-Bold', // Use the loaded Google font here
+    // fontFamily: 'Roboto-Bold', // Use the loaded Google font here
     fontSize: 36,  // Bigger font size for the header
     fontWeight: 'bold',  // Bold for prominence
     color: '#000',  // Black color for the header text
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,  // Rounded edges
     fontSize: 16,
     backgroundColor: '#fff',  // White input fields
-    fontFamily: 'Roboto-Regular', // Regular font style
+    // fontFamily: 'Roboto-Regular', // Regular font style
   },
   button: {
     marginTop: 20,

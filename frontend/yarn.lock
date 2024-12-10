@@ -2360,7 +2360,7 @@
 
 "@react-navigation/native@^7.0.13":
   version "7.0.13"
-  resolved "https://registry.npmjs.org/@react-navigation/native/-/native-7.0.13.tgz"
+  resolved "https://registry.yarnpkg.com/@react-navigation/native/-/native-7.0.13.tgz#6b2be58232117aa8ea43edae9fd255c25e3f53d1"
   integrity sha512-HLoMyp453qIDGjG72cJ2xLeGHHpP4PQve5gQvSn3o/6r2+DAmDuIcd/jXTMJGCHd2LeR9LfuqIvpiIlihg1iBg==
   dependencies:
     "@react-navigation/core" "^7.3.0"
@@ -2378,7 +2378,7 @@
 
 "@react-navigation/stack@^7.0.18":
   version "7.0.18"
-  resolved "https://registry.npmjs.org/@react-navigation/stack/-/stack-7.0.18.tgz"
+  resolved "https://registry.yarnpkg.com/@react-navigation/stack/-/stack-7.0.18.tgz#2231090f2b9dd7ed71934b689b471725c8736836"
   integrity sha512-Y2Q/tgYaZIZE15ejoOFJ9vZLw8fV1x/huIP2L9qARRn427l+QACIU4TYGTBOK6PafqOlFdDmfLkDvdgjD/qwxQ==
   dependencies:
     "@react-navigation/elements" "^2.2.4"
@@ -3811,7 +3811,7 @@ firebase@10.13.2:
 
 firebase@^11.0.2:
   version "11.0.2"
-  resolved "https://registry.npmjs.org/firebase/-/firebase-11.0.2.tgz"
+  resolved "https://registry.yarnpkg.com/firebase/-/firebase-11.0.2.tgz#5de236ee1f2fa517279595e5d4199428da772f48"
   integrity sha512-w4T8BSJpzdZA25QRch5ahLsgB6uRvg1LEic4BaC5rTD1YygroI1AXp+W+rbMnr8d8EjfAv6t4k8doULIjc1P8Q==
   dependencies:
     "@firebase/analytics" "0.10.10"
@@ -5661,10 +5661,10 @@ react-native-image-picker@^7.2.2:
   resolved "https://registry.npmjs.org/react-native-image-picker/-/react-native-image-picker-7.2.3.tgz"
   integrity sha512-zKIZUlQNU3EtqizsXSH92zPeve4vpUrsqHu2kkpCxWE9TZhJFZBb+irDsBOY8J21k0+Edgt06TMQGJ+iPUIXyA==
 
-react-native-maps@^1.20.1:
-  version "1.20.1"
-  resolved "https://registry.npmjs.org/react-native-maps/-/react-native-maps-1.20.1.tgz"
-  integrity sha512-NZI3B5Z6kxAb8gzb2Wxzu/+P2SlFIg1waHGIpQmazDSCRkNoHNY4g96g+xS0QPSaG/9xRBbDNnd2f2/OW6t6LQ==
+react-native-maps@1.18.0:
+  version "1.18.0"
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-1.18.0.tgz#48d253041a9baa5606b4f3647043d660a93b3b01"
+  integrity sha512-S17nYUqeMptgIPaAZuVRo+eRelPreBBYQWw6jsxU7qQ12p+THSfFaqabcNn7fBmsXhT3T27iIl8ek8v1H8BaGw==
   dependencies:
     "@types/geojson" "^7946.0.13"
 
