@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedMarker, setSelectedMarker] = useState(null); // State to track the selected marker
   const navigation = useNavigation();
 
   // Hardcoded coordinates for Orlando West, Soweto (lat, long)
@@ -26,8 +27,8 @@ const HomePage = () => {
     const [lat, lon] = business.location.split(',').map(coord => parseFloat(coord));
 
     // Add small offsets to the business coordinates to space them out
-    const adjustedLat = lat + (Math.random() * 0.005 - 0.0025);  // Random offset between -0.0025 and +0.0025
-    const adjustedLon = lon + (Math.random() * 0.005 - 0.0025);  // Random offset between -0.0025 and +0.0025
+    const adjustedLat = lat + (Math.random() * 0.005 - 0.0025); // Random offset between -0.0025 and +0.0025
+    const adjustedLon = lon + (Math.random() * 0.005 - 0.0025); // Random offset between -0.0025 and +0.0025
 
     return {
       ...business,
@@ -39,7 +40,16 @@ const HomePage = () => {
     const source = business.firestore ? 'firestore' : 'local'; // Determine source
     navigation.navigate('Profile', { businessId: business.id, source });
   };
-  
+
+  const handleMarkerPress = (business) => {
+    if (selectedMarker?.id === business.id) {
+      // Navigate to the business profile if the marker is clicked again
+      handleCardPress(business);
+    } else {
+      // Set the marker as selected
+      setSelectedMarker(business);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -81,6 +91,7 @@ const HomePage = () => {
                 }}
                 title={business.name}
                 description={business.type}
+                onPress={() => handleMarkerPress(business)} // Handle marker press
               />
             );
           })}
