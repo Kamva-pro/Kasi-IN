@@ -14,12 +14,12 @@ const LoginScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const navigation = useNavigation();
 
-  // Load custom font from Google Fonts
+  // Load custom font from Google Fonts using expo-font
   useEffect(() => {
     const loadFont = async () => {
       await Font.loadAsync({
-        'Roboto': 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap',
-        'Lobster': 'https://fonts.googleapis.com/css2?family=Lobster&display=swap',
+        'Roboto': require('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap'), // CDN font URL
+        'Lobster': require('https://fonts.googleapis.com/css2?family=Lobster&display=swap'), 
       });
       setFontLoaded(true);
     };
