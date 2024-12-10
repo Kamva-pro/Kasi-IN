@@ -14,11 +14,12 @@ const LoginScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const navigation = useNavigation();
 
-  // Load custom font
+  // Load custom font from Google Fonts
   useEffect(() => {
     const loadFont = async () => {
       await Font.loadAsync({
-        'custom-font': require('../assets/fonts/RobotoSlab-Bold.ttf'), // Replace with actual font file
+        'Roboto': 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap',
+        'Lobster': 'https://fonts.googleapis.com/css2?family=Lobster&display=swap',
       });
       setFontLoaded(true);
     };
@@ -98,7 +99,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   header: {
-    fontFamily: 'custom-font', // Use custom font here
+    fontFamily: 'Roboto', // Use the Google font here
     fontSize: 36,  // Bigger font size for the header
     fontWeight: 'bold',  // Bold for prominence
     color: '#000',  // Black color for the header text
