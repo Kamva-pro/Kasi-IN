@@ -14,16 +14,17 @@ const LoginScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const navigation = useNavigation();
 
-  // Load custom font from Google Fonts using expo-font
+  // Load custom fonts asynchronously
   useEffect(() => {
-    const loadFont = async () => {
+    const loadFonts = async () => {
       await Font.loadAsync({
-        'Roboto': require('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap'), // CDN font URL
-        'Lobster': require('https://fonts.googleapis.com/css2?family=Lobster&display=swap'), 
+        'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
+        'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
       });
       setFontLoaded(true);
     };
-    loadFont();
+
+    loadFonts();
   }, []);
 
   // Check if the user is already authenticated
@@ -53,6 +54,7 @@ const LoginScreen = () => {
     }
   };
 
+  // Wait for fonts to be loaded
   if (!fontLoaded) {
     return <AppLoading />;
   }
@@ -99,7 +101,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   header: {
-    fontFamily: 'Roboto', // Use the Google font here
+    fontFamily: 'Roboto-Bold', // Use the loaded Google font here
     fontSize: 36,  // Bigger font size for the header
     fontWeight: 'bold',  // Bold for prominence
     color: '#000',  // Black color for the header text
@@ -114,6 +116,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,  // Rounded edges
     fontSize: 16,
     backgroundColor: '#fff',  // White input fields
+    fontFamily: 'Roboto-Regular', // Regular font style
   },
   button: {
     marginTop: 20,
