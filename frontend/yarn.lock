@@ -2167,6 +2167,11 @@
   resolved "https://registry.npmjs.org/@protobufjs/utf8/-/utf8-1.1.0.tgz"
   integrity sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==
 
+"@react-native-community/checkbox@^0.5.17":
+  version "0.5.17"
+  resolved "https://registry.npmjs.org/@react-native-community/checkbox/-/checkbox-0.5.17.tgz"
+  integrity sha512-ZZx/eOH3SIxBg+hvA2zRd7lX5zPQEWcZU8C8Dn7WLdpJkiTkPmIUDFHWrmzxCnwZcyoD+BIt6gUZPKGGb9WmeQ==
+
 "@react-native-community/geolocation@^3.4.0":
   version "3.4.0"
   resolved "https://registry.npmjs.org/@react-native-community/geolocation/-/geolocation-3.4.0.tgz"
@@ -2360,7 +2365,7 @@
 
 "@react-navigation/native@^7.0.13":
   version "7.0.13"
-  resolved "https://registry.yarnpkg.com/@react-navigation/native/-/native-7.0.13.tgz#6b2be58232117aa8ea43edae9fd255c25e3f53d1"
+  resolved "https://registry.npmjs.org/@react-navigation/native/-/native-7.0.13.tgz"
   integrity sha512-HLoMyp453qIDGjG72cJ2xLeGHHpP4PQve5gQvSn3o/6r2+DAmDuIcd/jXTMJGCHd2LeR9LfuqIvpiIlihg1iBg==
   dependencies:
     "@react-navigation/core" "^7.3.0"
@@ -2378,7 +2383,7 @@
 
 "@react-navigation/stack@^7.0.18":
   version "7.0.18"
-  resolved "https://registry.yarnpkg.com/@react-navigation/stack/-/stack-7.0.18.tgz#2231090f2b9dd7ed71934b689b471725c8736836"
+  resolved "https://registry.npmjs.org/@react-navigation/stack/-/stack-7.0.18.tgz"
   integrity sha512-Y2Q/tgYaZIZE15ejoOFJ9vZLw8fV1x/huIP2L9qARRn427l+QACIU4TYGTBOK6PafqOlFdDmfLkDvdgjD/qwxQ==
   dependencies:
     "@react-navigation/elements" "^2.2.4"
@@ -3811,7 +3816,7 @@ firebase@10.13.2:
 
 firebase@^11.0.2:
   version "11.0.2"
-  resolved "https://registry.yarnpkg.com/firebase/-/firebase-11.0.2.tgz#5de236ee1f2fa517279595e5d4199428da772f48"
+  resolved "https://registry.npmjs.org/firebase/-/firebase-11.0.2.tgz"
   integrity sha512-w4T8BSJpzdZA25QRch5ahLsgB6uRvg1LEic4BaC5rTD1YygroI1AXp+W+rbMnr8d8EjfAv6t4k8doULIjc1P8Q==
   dependencies:
     "@firebase/analytics" "0.10.10"
@@ -5528,7 +5533,7 @@ prompts@^2.3.2:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.7.2, prop-types@^15.8.1:
+prop-types@^15.5.7, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -5646,6 +5651,13 @@ react-is@^19.0.0:
   resolved "https://registry.npmjs.org/react-is/-/react-is-19.0.0.tgz"
   integrity sha512-H91OHcwjZsbq3ClIDHMzBShc1rotbfACdWENsmEf0IFvZ3FgGPtdHMcsv45bQ1hAbgdfiA8SnxTKfDS+x/8m2g==
 
+react-native-check-box@^2.1.7:
+  version "2.1.7"
+  resolved "https://registry.yarnpkg.com/react-native-check-box/-/react-native-check-box-2.1.7.tgz#f349d3505a13c15d19949ec4cec40c7adc4f3626"
+  integrity sha512-dPVOoz4jKs2je2HSHp7+XJXNyZFq8Kij7IHutigrQKzB550Dko6ZAQu/1mG1FzdUMFxxkZ2nX59KmbR0Co0T8Q==
+  dependencies:
+    prop-types "^15.5.7"
+
 react-native-gesture-handler@~2.20.2:
   version "2.20.2"
   resolved "https://registry.npmjs.org/react-native-gesture-handler/-/react-native-gesture-handler-2.20.2.tgz"
@@ -5663,7 +5675,7 @@ react-native-image-picker@^7.2.2:
 
 react-native-maps@1.18.0:
   version "1.18.0"
-  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-1.18.0.tgz#48d253041a9baa5606b4f3647043d660a93b3b01"
+  resolved "https://registry.npmjs.org/react-native-maps/-/react-native-maps-1.18.0.tgz"
   integrity sha512-S17nYUqeMptgIPaAZuVRo+eRelPreBBYQWw6jsxU7qQ12p+THSfFaqabcNn7fBmsXhT3T27iIl8ek8v1H8BaGw==
   dependencies:
     "@types/geojson" "^7946.0.13"

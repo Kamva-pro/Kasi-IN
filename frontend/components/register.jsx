@@ -3,7 +3,6 @@ import { View, TextInput, Text, TouchableOpacity, Alert, StyleSheet, ScrollView 
 import { auth, db } from '../firebase-config'; // Import necessary Firebase modules
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { addDoc, collection } from 'firebase/firestore'; // Import Firestore methods
-import { launchImageLibrary } from 'react-native-image-picker';
 import * as Location from 'expo-location';
 
 const RegisterScreen = ({ navigation }) => {
@@ -16,10 +15,8 @@ const RegisterScreen = ({ navigation }) => {
   const [businessType, setBusinessType] = useState('');
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
-  const [menuItems, setMenuItems] = useState([]);
-  const [images, setImages] = useState([]);
-
-  // Function to handle user registration
+  
+  // Handle user registration
   const handleUserRegistration = async () => {
     if (password !== confirmPassword) {
       Alert.alert('Error', 'Passwords do not match!');
@@ -43,20 +40,19 @@ const RegisterScreen = ({ navigation }) => {
     }
   };
 
-  // Function to handle business registration
+  // Handle business registration
   const handleBusinessRegistration = async () => {
     if (password !== confirmPassword) {
       Alert.alert('Error', 'Passwords do not match!');
       return;
     }
     try {
-      // Create user for business authentication
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const businessId = userCredential.user.uid; // Get the UID of the authenticated business user
+      const businessId = userCredential.user.uid;
 
-      // Save business details to Firestore directly in the 'businesses' collection
+      // Save business details to Firestore
       await addDoc(collection(db, 'businesses'), {
-        business_id: businessId, // Use the UID as the business ID
+        business_id: businessId,
         business_name: businessName,
         business_type: businessType,
         description,
@@ -70,7 +66,7 @@ const RegisterScreen = ({ navigation }) => {
     }
   };
 
-  // Function to handle location picking
+  // Handle location picking
   const pickLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
@@ -79,22 +75,14 @@ const RegisterScreen = ({ navigation }) => {
     }
 
     let location = await Location.getCurrentPositionAsync({});
-    setLocation(`${location.coords.latitude}, ${location.coords.longitude}`);  // Set location as a string (latitude, longitude)
+    setLocation(`${location.coords.latitude}, ${location.coords.longitude}`);
   };
-
-  // Function to allow image selection
-  // const selectImage = () => {
-  //   launchImageLibrary({ mediaType: 'photo', selectionLimit: 5 }, (response) => {
-  //     if (response.assets) {
-  //       setImages(response.assets.map(asset => asset.uri));  // Save the image URIs
-  //     }
-  //   });
-  // };
 
   return (
     <ScrollView style={styles.container}>
+      {/* Role Selection */}
       {!selectedRole && (
-        <View>
+        <View style={styles.roleSelectionContainer}>
           <TouchableOpacity style={styles.button} onPress={() => setSelectedRole('user')}>
             <Text style={styles.buttonText}>Register as User</Text>
           </TouchableOpacity>
@@ -104,8 +92,9 @@ const RegisterScreen = ({ navigation }) => {
         </View>
       )}
 
+      {/* User Registration Form */}
       {selectedRole === 'user' && (
-        <View>
+        <View style={styles.formContainer}>
           <TextInput
             style={styles.input}
             placeholder="Name"
@@ -138,16 +127,16 @@ const RegisterScreen = ({ navigation }) => {
         </View>
       )}
 
+      {/* Business Registration Form */}
       {selectedRole === 'business' && (
-        <View>
+        <View style={styles.formContainer}>
           <TextInput
             style={styles.input}
             placeholder="Business Name"
             value={businessName}
             onChangeText={setBusinessName}
           />
-
-<TextInput
+          <TextInput
             style={styles.input}
             placeholder="Email"
             value={email}
@@ -167,7 +156,6 @@ const RegisterScreen = ({ navigation }) => {
             value={confirmPassword}
             onChangeText={setConfirmPassword}
           />
-
           <TextInput
             style={styles.input}
             placeholder="Business Type"
@@ -178,25 +166,12 @@ const RegisterScreen = ({ navigation }) => {
             <Text style={styles.buttonText}>Pick Location</Text>
           </TouchableOpacity>
           <Text>{location ? `Location: ${location}` : 'No location selected'}</Text>
-
           <TextInput
             style={styles.input}
             placeholder="Description"
             value={description}
             onChangeText={setDescription}
           />
-
-          {/* <TextInput
-            style={styles.input}
-            placeholder="Menu Items (comma separated)"
-            value={menuItems.join(', ')}
-            onChangeText={(text) => setMenuItems(text.split(',').map(item => item.trim()))}
-          />
-
-          <TouchableOpacity style={styles.button} onPress={selectImage}>
-            <Text style={styles.buttonText}>Select Images</Text>
-          </TouchableOpacity> */}
-
           <TouchableOpacity style={styles.button} onPress={handleBusinessRegistration}>
             <Text style={styles.buttonText}>Register Business</Text>
           </TouchableOpacity>
@@ -210,47 +185,47 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#f4f4f9',
+    backgroundColor: '#fff',  // White background to match the login screen theme
   },
-  input: {
-    width: '40%',
-    padding: 15,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 5,
-    backgroundColor: '#fff',
+  roleSelectionContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 40,
   },
- 
-
-  button: {
-    marginTop: 20,
-    backgroundColor: '#4CAF50',
-    padding: 15,
-    width: '40%',
-    borderRadius: 5,
+  formContainer: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  
+  input: {
+    width: '80%',
+    padding: 15,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 25,  // Rounded corners to match the login screen
+    backgroundColor: '#fff',
+    fontSize: 16,
+  },
+  button: {
+    marginTop: 20,
+    backgroundColor: '#000',  // Black background for buttons
+    paddingVertical: 15,
+    width: '80%',
+    borderRadius: 25,
+    alignItems: 'center',
+  },
   buttonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
   },
   linkText: {
-    marginTop: 20,
-    color: '#838383',
-  },
-  button: {
-    padding: 15,
-    backgroundColor: '#4CAF50',
-    marginBottom: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
+    marginTop: 15,
+    color: '#000',  // Dark text for links
     fontSize: 16,
+    textDecorationLine: 'underline',
   },
 });
 
