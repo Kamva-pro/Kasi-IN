@@ -18,10 +18,21 @@ const HomePage = () => {
   };
 
   // Filter businesses based on search query
-  const filteredBusinesses = businesses.filter(business =>
-    business.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
+  const filteredBusinesses = businesses.filter(business => {
+    // Normalize the search query by replacing "and" and "or" with a space
+    const normalizedQuery = searchQuery.toLowerCase().replace(/\b(and|or)\b/g, ' ');
+  
+    // Split the query into individual keywords
+    const keywords = normalizedQuery.split(' ').filter(keyword => keyword.trim() !== '');
+  
+    // Check if every keyword matches at least one field
+    return keywords.every(keyword =>
+      business.name.toLowerCase().includes(keyword) ||
+      business.type.toLowerCase().includes(keyword) ||
+      (business.description && business.description.toLowerCase().includes(keyword))
+    );
+  });
+  
   // Adjust business locations to add distance between markers
   const adjustedBusinesses = filteredBusinesses.map(business => {
     const [lat, lon] = business.location.split(',').map(coord => parseFloat(coord));
