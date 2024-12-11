@@ -14,19 +14,6 @@ const LoginScreen = () => {
   // const [fontLoaded, setFontLoaded] = useState(false);
   const navigation = useNavigation();
 
-  // // Load custom fonts asynchronously
-  // useEffect(() => {
-  //   const loadFonts = async () => {
-  //     await Font.loadAsync({
-  //       'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
-  //       'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
-  //     });
-  //     setFontLoaded(true);
-  //   };
-
-  //   loadFonts();
-  // }, []);
-
   // Check if the user is already authenticated
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, user => {
@@ -47,6 +34,8 @@ const LoginScreen = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       Alert.alert('Login Successful', 'Welcome!');
+      navigation.replace('Home');
+
     } catch (error) {
       Alert.alert('Error', error.message);
     } finally {
@@ -97,7 +86,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',  // Plain white background
+    backgroundColor: '#fff', 
     padding: 20,
   },
   header: {
