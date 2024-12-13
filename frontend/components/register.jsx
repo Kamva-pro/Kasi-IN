@@ -67,7 +67,7 @@ const RegisterScreen = ({ navigation }) => {
       });
 
       Alert.alert('Business Registered', 'Your business has been added!');
-      navigation.navigate('Home'); // Redirect to home after registration
+      navigation.navigate('Login'); // Redirect to home after registration
     } catch (error) {
       Alert.alert('Error', error.message);
     }

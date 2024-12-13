@@ -1,4 +1,4 @@
-// components/LoginScreen.js
+
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, TouchableOpacity, Text, Alert, StyleSheet } from 'react-native';
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
@@ -18,7 +18,6 @@ const LoginScreen = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, user => {
       if (user) {
-        // If the user is logged in, navigate to Home screen
         navigation.replace('Home');
       }
     });
@@ -43,11 +42,6 @@ const LoginScreen = () => {
     }
   };
 
-  // Wait for fonts to be loaded
-  // if (!fontLoaded) {
-  //   return <AppLoading />;
-  // }
-
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Welcome to Kasi IN</Text>
@@ -67,7 +61,7 @@ const LoginScreen = () => {
         value={password}
         onChangeText={setPassword}
         secureTextEntry
-        placeholderTextColor="#888"  // Light placeholder color
+        placeholderTextColor="#888"  
       />
 
       <TouchableOpacity onPress={handleLogin} style={styles.button} disabled={loading}>
@@ -90,41 +84,40 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   header: {
-    // fontFamily: 'Roboto-Bold', // Use the loaded Google font here
-    fontSize: 36,  // Bigger font size for the header
-    fontWeight: 'bold',  // Bold for prominence
-    color: '#000',  // Black color for the header text
-    marginBottom: 40,  // Spacing between header and form
+    fontSize: 36,  
+    fontWeight: 'bold',
+    color: '#000', 
+    marginBottom: 40,  
   },
   input: {
     width: '80%',
     padding: 15,
     marginBottom: 20,
     borderWidth: 1,
-    borderColor: '#ccc',  // Light grey border
-    borderRadius: 25,  // Rounded edges
+    borderColor: '#ccc',  
+    borderRadius: 25,  
     fontSize: 16,
-    backgroundColor: '#fff',  // White input fields
+    backgroundColor: '#fff',  
     // fontFamily: 'Roboto-Regular', // Regular font style
   },
   button: {
     marginTop: 20,
-    backgroundColor: '#000',  // Black button for high contrast
+    backgroundColor: '#000', 
     paddingVertical: 15,
     width: '80%',
-    borderRadius: 25,  // Rounded edges
+    borderRadius: 25,  
     alignItems: 'center',
   },
   buttonText: {
-    color: '#fff',  // White text on dark button
+    color: '#fff',  
     fontSize: 18,
     fontWeight: 'bold',
   },
   linkText: {
     marginTop: 15,
-    color: '#000',  // Dark text for the link
+    color: '#000', 
     fontSize: 16,
-    textDecorationLine: 'underline',  // Simple underline for clarity
+    textDecorationLine: 'underline', 
   },
 });
 
