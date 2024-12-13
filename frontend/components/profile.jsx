@@ -1,31 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Modal, Alert } from 'react-native';
-import { doc, getDoc } from 'firebase/firestore'; // Import Firestore methods
-import { db } from '../firebase-config'; // Use your firebase-config.js file
-import CheckBox from 'react-native-check-box'; // Import the checkbox component
+import { doc, getDoc } from 'firebase/firestore'; 
+import { db } from '../firebase-config'; 
+import CheckBox from 'react-native-check-box';
 
-import businesses from '../businesses'; // Import the local businesses array
+import businesses from '../businesses'; 
 
 const BusinessProfile = ({ route }) => {
-  const { businessId, source } = route.params; // Add source parameter
+  const { businessId, source } = route.params; 
   const [business, setBusiness] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedItems, setSelectedItems] = useState({});
 
-  // Preload the abstract art images
   const coverImages = [
     require('../assets/img-1.jpg'),
     require('../assets/img-2.jpg'),
     require('../assets/img-3.jpg'),
   ];
 
-  // Select a random image
   const randomImage = coverImages[Math.floor(Math.random() * coverImages.length)];
 
   useEffect(() => {
     const fetchBusiness = async () => {
       if (source === 'firestore') {
-        const docRef = doc(db, 'businesses', businessId); // Use Firestore
+        const docRef = doc(db, 'businesses', businessId); 
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           setBusiness(docSnap.data());
@@ -33,7 +31,7 @@ const BusinessProfile = ({ route }) => {
           console.log('No such document in Firestore!');
         }
       } else if (source === 'local') {
-        const localBusiness = businesses.find(b => b.id === businessId); // Find in local data
+        const localBusiness = businesses.find(b => b.id === businessId); 
         if (localBusiness) {
           setBusiness(localBusiness);
         } else {
