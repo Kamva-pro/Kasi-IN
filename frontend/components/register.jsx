@@ -15,9 +15,12 @@ const RegisterScreen = ({ navigation }) => {
   const [businessType, setBusinessType] = useState('');
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
-  
+  const [loading, setLoading] = useState(false);
+
   // Handle user registration
   const handleUserRegistration = async () => {
+
+    setLoading(true);
     if (password !== confirmPassword) {
       Alert.alert('Error', 'Passwords do not match!');
       return;
@@ -38,10 +41,14 @@ const RegisterScreen = ({ navigation }) => {
     } catch (error) {
       Alert.alert('Error', error.message);
     }
+    finally{
+      setLoading(false);
+    }
   };
 
   // Handle business registration
   const handleBusinessRegistration = async () => {
+    setLoading(true);
     if (password !== confirmPassword) {
       Alert.alert('Error', 'Passwords do not match!');
       return;
@@ -63,6 +70,9 @@ const RegisterScreen = ({ navigation }) => {
       navigation.navigate('Home'); // Redirect to home after registration
     } catch (error) {
       Alert.alert('Error', error.message);
+    }
+    finally{
+      setLoading(false);
     }
   };
 
@@ -122,7 +132,7 @@ const RegisterScreen = ({ navigation }) => {
             onChangeText={setConfirmPassword}
           />
           <TouchableOpacity style={styles.button} onPress={handleUserRegistration}>
-            <Text style={styles.buttonText}>Register</Text>
+          <Text style={styles.buttonText}>{loading ? 'Creating User...' : 'Register'}</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -173,7 +183,7 @@ const RegisterScreen = ({ navigation }) => {
             onChangeText={setDescription}
           />
           <TouchableOpacity style={styles.button} onPress={handleBusinessRegistration}>
-            <Text style={styles.buttonText}>Register Business</Text>
+          <Text style={styles.buttonText}>{loading ? 'Registering...' : 'Register Business'}</Text>
           </TouchableOpacity>
         </View>
       )}
