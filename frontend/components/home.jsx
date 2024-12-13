@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { View, TextInput, StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import businesses from '../businesses'; // Import businesses data
+import businesses from '../businesses'; 
 import { useNavigation } from '@react-navigation/native';
 
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedMarker, setSelectedMarker] = useState(null); // State to track the selected marker
+  const [selectedMarker, setSelectedMarker] = useState(null);
   const navigation = useNavigation();
 
-  // Hardcoded coordinates for Orlando West, Soweto (lat, long)
   const sowetoRegion = {
     latitude: -26.2283,
     longitude: 27.8981,
@@ -17,16 +16,13 @@ const HomePage = () => {
     longitudeDelta: 0.0421,
   };
 
-  // Filter businesses based on search query
   const filteredBusinesses = businesses.filter(business =>
     business.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Adjust business locations to add distance between markers
   const adjustedBusinesses = filteredBusinesses.map(business => {
     const [lat, lon] = business.location.split(',').map(coord => parseFloat(coord));
 
-    // Add small offsets to the business coordinates to space them out
     const adjustedLat = lat + (Math.random() * 0.005 - 0.0025); // Random offset between -0.0025 and +0.0025
     const adjustedLon = lon + (Math.random() * 0.005 - 0.0025); // Random offset between -0.0025 and +0.0025
 
@@ -43,10 +39,8 @@ const HomePage = () => {
 
   const handleMarkerPress = (business) => {
     if (selectedMarker?.id === business.id) {
-      // Navigate to the business profile if the marker is clicked again
       handleCardPress(business);
     } else {
-      // Set the marker as selected
       setSelectedMarker(business);
     }
   };

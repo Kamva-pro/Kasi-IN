@@ -67,7 +67,7 @@ const RegisterScreen = ({ navigation }) => {
       });
 
       Alert.alert('Business Registered', 'Your business has been added!');
-      navigation.navigate('Login'); // Redirect to home after registration
+      navigation.navigate('Login');
     } catch (error) {
       Alert.alert('Error', error.message);
     }
@@ -76,7 +76,6 @@ const RegisterScreen = ({ navigation }) => {
     }
   };
 
-  // Handle location picking
   const pickLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
@@ -195,7 +194,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',  // White background to match the login screen theme
+    backgroundColor: '#fff',  
   },
   roleSelectionContainer: {
     flex: 1,
@@ -214,13 +213,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderWidth: 1,
     borderColor: '#ccc',
-    borderRadius: 25,  // Rounded corners to match the login screen
+    borderRadius: 25,
     backgroundColor: '#fff',
     fontSize: 16,
   },
   button: {
     marginTop: 20,
-    backgroundColor: '#000',  // Black background for buttons
+    backgroundColor: '#000', 
     paddingVertical: 15,
     width: '80%',
     borderRadius: 25,
@@ -233,7 +232,7 @@ const styles = StyleSheet.create({
   },
   linkText: {
     marginTop: 15,
-    color: '#000',  // Dark text for links
+    color: '#000', 
     fontSize: 16,
     textDecorationLine: 'underline',
   },
