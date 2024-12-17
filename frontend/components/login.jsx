@@ -44,7 +44,7 @@ const LoginScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Welcome to Kasi IN</Text>
+      <Text style={styles.header}>Welcome Back!</Text>
 
       <TextInput
         style={styles.input}
@@ -84,6 +84,11 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   header: {
+    // fontFamily: 'Roboto-Bold', // Use the loaded Google font here
+    fontSize: 24,  // Bigger font size for the header
+    fontWeight: 'bold',  // Bold for prominence
+    color: '#000',  // Black color for the header text
+    marginBottom: 40,  // Spacing between header and form
     fontSize: 36,  
     fontWeight: 'bold',
     color: '#000', 
