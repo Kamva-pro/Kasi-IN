@@ -1,0 +1,21 @@
+[debug] [2024-12-17T01:13:05.817Z] ----------------------------------------------------------------------
+[debug] [2024-12-17T01:13:05.822Z] Command:       /home/kamvelihlefatman/.nvm/versions/node/v20.18.1/bin/node /home/kamvelihlefatman/.nvm/versions/node/v20.18.1/bin/firebase init
+[debug] [2024-12-17T01:13:05.823Z] CLI Version:   13.29.1
+[debug] [2024-12-17T01:13:05.823Z] Platform:      linux
+[debug] [2024-12-17T01:13:05.824Z] Node Version:  v20.18.1
+[debug] [2024-12-17T01:13:05.824Z] Time:          Tue Dec 17 2024 03:13:05 GMT+0200 (South Africa Standard Time)
+[debug] [2024-12-17T01:13:05.824Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-12-17T01:13:05.836Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-12-17T01:13:05.837Z] > authorizing via signed-in user (kamvelihlefatman@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /home/kamvelihlefatman/projects/mobile-apps/Kasi-IN
+
